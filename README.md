@@ -1,5 +1,5 @@
 # Appointment Organizer
-The Appointment Organizer
+COMP2432 Group Project - The Appointment Organizer.
 
 ## Programming Language
 - C Language
