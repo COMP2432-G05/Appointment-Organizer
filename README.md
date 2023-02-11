@@ -1,10 +1,14 @@
 # Appointment Organizer
+
 COMP2432 Group Project - The Appointment Organizer.
 
 ## Programming Language
+
 - C Language
+- Shell Script
 
 ## Group Members (G05)
+
 - DENG, Chun Yung
 - JIANG, Guanlin
 - LI, Tong
