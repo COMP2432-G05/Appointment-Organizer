@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
     
-    
+    printf("fk\n");
     // start the program
     int i;
     int childNumber = argc-3; 
@@ -19,8 +19,11 @@ int main(int argc, char *argv[]) {
     strcpy(startDate, argv[1]);
     strcpy(endDate, argv[2]);
 
-    if(childNumber < 3 || childNumber > 10) printf("*the number of users is not in the range 3 to 10*\n"); exit(1);//The system should return an error message if the number of users is not in the range 3 to 10
-    
+    if(childNumber < 3 || childNumber > 10){
+        printf("*the number of users is not in the range 3 to 10*\n"); //The system should return an error message if the number of users is not in the range 3 to 10
+        exit(1);
+    } 
+
     //pipe
     int p2c[childNumber][2];	// parent to child
     int c2p[childNumber][2];    // child to parent
@@ -37,6 +40,8 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
     }
+    
+    printf("fk3\n");
 
     printf("parent process %d:\n", getpid());
 
@@ -49,10 +54,20 @@ int main(int argc, char *argv[]) {
             exit(1);
         }    
 		else if(childId == 0) {
-			printf("child process %d, from User %s\n",getpid(), name[i]);
-            while(true){
-                read(p2c[i])
+			close(p2c[i][1]);
+            
+            while(1){
+                printf("child process %d, from User %s\n",getpid(), name[i]);
+                int n;
+                if((n = read(p2c[i][0],buf,80)) > 0){ // read from pipe
+                    buf[n] = 0;
+                    
+                    printf("<child> message [%s] of size %d bytes received\n",buf,n);
+
+                    if(strcmp(buf,"endProgram") == 0) break;
+                }
             }
+
 			exit(0);
 		}
         else if(childId > 0) {
@@ -67,9 +82,17 @@ int main(int argc, char *argv[]) {
     while(1){ 
         printf("Please enter appointment:\n");
         gets(input);
+        int len=strlen(input);
+        strcpy(buf, input);
+       
+        if(strcmp("endProgram", input) == 0){ // end Program
+            for(i=0;i<childNumber;i++){
+                write(p2c[i][1],buf,len);
+            }
+            break;
+        } 
+
         judgeInputStatement(input);
-        
-        if(strcmp("endProgram", input) == 0) break; // end Program
     }
     
     for (i = 0; i < childNumber; i++) { 
@@ -77,7 +100,7 @@ int main(int argc, char *argv[]) {
     }
     printf("parent jobs finished!!\n");
 
-    return 0;
+    exit(0);
 }
 
 // trying !!!
