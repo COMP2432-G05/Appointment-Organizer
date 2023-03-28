@@ -1,0 +1,86 @@
+Period: -- to --
+Algorithm used: FCFS
+***Appointment Schedule***
+    john, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of john's Schedule -
+=========================================================================
+
+
+    mary, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of mary's Schedule -
+=========================================================================
+
+
+    lucy, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of lucy's Schedule -
+=========================================================================
+
+
+    paul, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of paul's Schedule -
+=========================================================================
+
+
+Period: -- to --
+Algorithm used: alg
+***Appointment Schedule***
+    john, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of john's Schedule -
+=========================================================================
+
+
+    mary, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of mary's Schedule -
+=========================================================================
+
+
+    lucy, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of lucy's Schedule -
+=========================================================================
+
+
+    paul, you have 999 appointments.
+Date      Start      End      Type      People
+=========================================================================
+
+
+
+                      - End of paul's Schedule -
+=========================================================================
+
+
