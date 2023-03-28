@@ -356,7 +356,6 @@ char* print_Appointment(struct Appointment *node){
     dur = (node->duration) * 60;
     end_m = start_m + dur % 60;
     if(end_m >= 60) { end_m -= 60; carry++; }
-    end_h = start_h + dur / 60 + carry;
 
     sprintf(result, "%s%c%c%c%c-%c%c-%c%c   %02d:%02d   %02d:%02d   %s", 
         result, node->date[0], node->date[1], node->date[2], node->date[3], node->date[4], node->date[5], 
@@ -649,9 +648,186 @@ int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNu
     return -1;
 }
 
+int readFileSeq(int algMode) {
+    int i = 0;
+
+    FILE *rd = rd;
+    rd = fopen("./seq.txt", "r");
+    
+    int count = 0;
+    int seqFCFS = 0; // 0
+    int seqP = 0; // 1
+    int seqALL = 0; //2
+
+    fscanf(rd, "%d", &i);
+    while (!feof(rd)) {        
+        if (count == 0) {
+            seqFCFS = i;
+        }
+        if (count == 1) {
+            seqP = i;
+        }
+        if (count == 2) {
+            seqALL = i;
+        }
+        fscanf(rd, "%d", &i);
+        count++;
+    }
+
+    if (algMode == 0) {
+        return seqFCFS;
+    }
+    if (algMode == 1) {
+        return seqP;
+    }
+    if (algMode == 2) {
+        return seqALL;
+    }
+    
+    fclose(rd);
+
+    return -1;
+}
+
+void updateFileSeq(int algMode) {
+    int i = 0;
+
+    FILE *rd = rd;
+    FILE *wr = wr;
+    rd = fopen("./seq.txt", "r");
+    
+    int count = 0;
+    int seqFCFS = 0; // 0
+    int seqP = 0; // 1
+    int seqALL = 0; //2
+    char buffer[20];
+
+    fscanf(rd, "%d", &i);
+    while (!feof(rd)) {        
+        if (count == 0) {
+            seqFCFS = i;
+        }
+        if (count == 1) {
+            seqP = i;
+        }
+        if (count == 2) {
+            seqALL = i;
+        }
+        fscanf(rd, "%d", &i);
+        count++;
+    }
+
+    if (algMode == 0) {
+        seqFCFS++;
+    }
+    if (algMode == 1) {
+        seqP++;
+    }
+    if (algMode == 2) {
+        seqALL++;
+    }
+
+    wr = fopen("./seq.txt", "w");
+    sprintf(buffer, "%d %d %d\n", seqFCFS, seqP, seqALL);
+    fputs(buffer, wr);
+    fclose(rd);
+    fclose(wr);
+    printf("%d %d %d\n", seqFCFS, seqP, seqALL);
+}
+
+
 // create .txt file & store the records to the file
-void logRecords() {
-    char *logFile = "./output/log.txt";
-    FILE *fp = fopen(logFile, "a+");
+void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], int countAppointmentFromUser, char algorithms[0][20], int algNum) {
+    int userNum = 4;
+    int i;
+    char logFile[20];
+    int seq = 0;
+
+    if (algNum == 1) {
+        if (strcmp(algorithms[0], "FCFS") == 0) {
+            seq = readFileSeq(0);
+        } else {
+            seq = readFileSeq(1);
+        }
+    } else if (algNum == 2) {
+        seq = readFileSeq(2);
+    }
+
+    if (algNum == 1) {
+        sprintf(logFile, "./G05_%02d_%s.txt", seq, algorithms[0]);
+        if (strcmp(algorithms[0], "FCFS") == 0) {
+            updateFileSeq(0);
+        } else {
+            updateFileSeq(1);
+        }
+        
+    } else if (algNum == 2) {
+        int seq = 1;
+        sprintf(logFile, "./G05_%02d_ALL.txt", seq, algorithms[0]);
+        updateFileSeq(2);
+    }
+
+    FILE *fp = fp;
+    fopen(logFile, "w");
+    fp = fopen(logFile, "a+");
+
+    int algI;
+    for (algI = 0; algI < algNum; algI++) {
+        fputs("Period: ", fp);
+        for (i = 0; i < 8; i++) {
+            if (i == 4 || i == 6) {
+                fputs("-", fp);
+                char temp[2];
+                temp[0] = startDate[i];
+                temp[1] = '\0';
+                fputs(temp, fp);
+            } else {
+                char temp[2];
+                temp[0] = startDate[i];
+                temp[1] = '\0';
+                fputs(temp, fp);
+            }
+        }
+        fputs(" to ", fp);
+        for (i = 0; i < 9; i++) {
+            if (i == 4 || i == 6) {
+                fputs("-", fp);
+                char temp[2];
+                temp[0] = endDate[i];
+                temp[1] = '\0';
+                fputs(temp, fp);
+            } else {
+                char temp[2];
+                temp[0] = endDate[i];
+                temp[1] = '\0';
+                fputs(temp, fp);
+            }
+        }
+        fputs("\nAlgorithm used: ", fp);
+        fputs(algorithms[algI], fp);
+        fputs("\n\n", fp);
+        fputs("***Appointment Schedule***\n\n", fp);
+
+        for (i = 0; i < userNum; i++) {
+            fputs("    ", fp);
+            fputs(name[i], fp);
+            fputs(", you have ", fp);
+            fputs("999", fp);
+            // fputs(countAppointmentFromUser, fp);
+            fputs(" appointments.\n", fp);
+            fputs("Date      Start      End      Type      People\n", fp);
+            fputs("=========================================================================\n", fp);
+            fputs("\n", fp);
+            fputs("\n", fp);
+            fputs("\n", fp);
+
+            fputs("                      - End of ", fp);
+            fputs(name[i], fp);
+            fputs("'s Schedule -\n", fp);
+            fputs("=========================================================================\n", fp);
+            fputs("\n", fp);
+            fputs("\n", fp);
+        }
+    }
 }
 
