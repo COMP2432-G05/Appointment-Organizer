@@ -3,74 +3,121 @@
 #include <string.h>
 #define NAME_SIZE 20
 
-void readFileSeq() {
+int readFileSeq(int algMode) {
     int i = 0;
 
     FILE *rd = rd;
     rd = fopen("./seq.txt", "r");
+    
+    int count = 0;
+    int seqFCFS = 0; // 0
+    int seqP = 0; // 1
+    int seqALL = 0; //2
 
     fscanf(rd, "%d", &i);
-    while (!feof(rd)) {
-        printf("%d ", i);
+    while (!feof(rd)) {        
+        if (count == 0) {
+            seqFCFS = i;
+        }
+        if (count == 1) {
+            seqP = i;
+        }
+        if (count == 2) {
+            seqALL = i;
+        }
         fscanf(rd, "%d", &i);
+        count++;
     }
-    printf("\n");
+
+    if (algMode == 0) {
+        return seqFCFS;
+    }
+    if (algMode == 1) {
+        return seqP;
+    }
+    if (algMode == 2) {
+        return seqALL;
+    }
     
     fclose(rd);
+
+    return -1;
 }
 
 void updateFileSeq(int algMode) {
     int i = 0;
 
     FILE *rd = rd;
+    FILE *wr = wr;
     rd = fopen("./seq.txt", "r");
     
-    int count;
-    char *seqFCFS; // 0
-    char *seqP; // 1
-    char *seqALL; //2
+    int count = 0;
+    int seqFCFS = 0; // 0
+    int seqP = 0; // 1
+    int seqALL = 0; //2
+    char buffer[20];
 
     fscanf(rd, "%d", &i);
-    while (!feof(rd)) {
-        printf("%d ", i);
+    while (!feof(rd)) {        
+        if (count == 0) {
+            seqFCFS = i;
+        }
+        if (count == 1) {
+            seqP = i;
+        }
+        if (count == 2) {
+            seqALL = i;
+        }
         fscanf(rd, "%d", &i);
+        count++;
     }
-    // printf("%c\n", i);
-    // for (count = 0; count < 3; count++) {
-    //     if (count == 0) {
-    //         printf("%c", *(&i));
-    //         seqFCFS = *(&i);
-    //     }
-    //     if (count == 1) {
-    //         printf("%c", *(&i + 1));
-    //         seqP = *(&i + 1);
-    //     }
-    //     if (count == 2) {
-    //         printf("%c", *(&i + 2));
-    //         seqALL = *(&i + 2);
-    //     }
-    //     count++;
-    // }
-    // sprintf(buffer, "%d", counter);
-    // fputs(buffer, fptOut);
-    
-    fclose(rd);
 
-    // printf("%s %s %s\n", seqFCFS, seqP, seqALL);
+    if (algMode == 0) {
+        seqFCFS++;
+    }
+    if (algMode == 1) {
+        seqP++;
+    }
+    if (algMode == 2) {
+        seqALL++;
+    }
+
+    wr = fopen("./seq.txt", "w");
+    sprintf(buffer, "%d %d %d\n", seqFCFS, seqP, seqALL);
+    fputs(buffer, wr);
+    fclose(rd);
+    fclose(wr);
+    printf("%d %d %d\n", seqFCFS, seqP, seqALL);
 }
 
 void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], int countAppointmentFromUser, char algorithms[0][20], int algNum) {
     int userNum = 4;
     int i;
     char logFile[20];
+    int seq = 0;
 
     if (algNum == 1) {
-        int seq = 1;
+        if (strcmp(algorithms[0], "FCFS") == 0) {
+            seq = readFileSeq(0);
+        } else {
+            seq = readFileSeq(1);
+        }
+    } else if (algNum == 2) {
+        seq = readFileSeq(2);
+    }
+
+    if (algNum == 1) {
         sprintf(logFile, "./G05_%02d_%s.txt", seq, algorithms[0]);
+        if (strcmp(algorithms[0], "FCFS") == 0) {
+            updateFileSeq(0);
+        } else {
+            updateFileSeq(1);
+        }
         
     } else if (algNum == 2) {
         int seq = 1;
         sprintf(logFile, "./G05_%02d_ALL.txt", seq, algorithms[0]);
+        updateFileSeq(2);
     }
 
     FILE *fp = fp;
@@ -164,13 +211,12 @@ int main(int argc, char *argv[]) {
         strcpy(name[i], argv[i+3]);
     }
 
-    char algorithms[2][20] = {"FCFS"};
+    // char algorithms[2][20] = {"FCFS"};
+    char algorithms[2][20] = {"ALL"};
 
     int algNum = 1;
 
-    // logRecords(name, startDate, endDate, 999, algorithms, algNum);
-
-    updateFileSeq(0);
+    logRecords(name, startDate, endDate, 999, algorithms, algNum);
 
     return 0;
 }
