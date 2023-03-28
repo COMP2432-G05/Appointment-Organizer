@@ -6,6 +6,8 @@
 
 #define NAME_SIZE 20
 #define COLS 5
+#define TIMESLOTS_PER_DAY 5
+#define BUF_SIZE 80
 
 struct Appointment {
     char sentence[80];
@@ -91,6 +93,27 @@ int timeToIndex(int time){
     }
 }
 
+int isAppointmentCommand(char* command){
+    int res = 0;
+    if( strcmp("privateTime", command) == 0) {
+        res = 1;
+    }
+    else if(strcmp("projectMeeting", command) == 0){
+        res = 1;
+    }
+    else if(strcmp("groupStudy", command) == 0){
+        res = 1;
+    }
+    else if(strcmp("gathering", command) == 0){
+        res = 1;
+    }
+
+    return res;
+}
+
+
+/*-----------Check Availability----------------*/
+
 // Print 2D array
 void print2Darray(int timetable[][COLS], int days){
     int i, j;
@@ -143,15 +166,226 @@ int daysCal(char *startDate, char *endDate){
     int start = atoi(startDate);
     int end = atoi(endDate);
     int days = end-start+1;
-    
     return days;
 }
+/*---------------------------------------------*/
+
+//--------------------------ASSIGN & REMOVE FUNCTIONS---------------------------------
+int dateToIndex(int date){
+    return ( date % 100) -1;
+}
+
+int startTimeToIndex(int time){
+    /*
+        This function returns the index number of the slot that a given time lies in timeTable.
+        INPUT:
+            time: a numerical representaion of time. e.g. 1800 => 18:00
+        OUTPUT:
+            Returns numerical index of the time slot it lies in. e.g. 1845 lies in 18:00 - 19:00 => 0(index)
+    */
+     if(time >= 1800 && time < 1900){
+        return 0;
+    }
+    if(time >= 1900 && time < 2000){
+        return 1;
+    }
+    if(time >= 2000 && time < 2100){
+        return 2;
+    }
+    if(time >= 2100 && time < 2200){
+        return 3;
+    }
+    if(time >= 2200 && time < 2300){
+        return 4;
+    }
+
+}
+
+int endTimeToIndex(int time){
+    /*
+        This function returns the index number of the slot that a given time lies in timeTable.
+        INPUT:
+            time: a numerical representaion of time. e.g. 1800 => 18:00
+        OUTPUT:
+            Returns numerical index of the time slot it lies in. e.g. 1845 lies in 18:00 - 19:00 => 0(index)
+    */
+     if(time > 1800 && time <= 1900){
+        return 0;
+    }
+    if(time > 1900 && time <= 2000){
+        return 1;
+    }
+    if(time > 2000 && time <= 2100){
+        return 2;
+    }
+    if(time > 2100 && time <= 2200){
+        return 3;
+    }
+    if(time > 2200 && time <= 2300){
+        return 4;
+    }
+
+}
+
+void assignFCFS(int timeTable[][TIMESLOTS_PER_DAY], int taskID, int date, int startTime, float duration){
+    /*
+        This function fills the timeTable with the ID of given appointment details.
+        INPUT:
+            timeTable: 2D array of availability
+            taskID: an integer identifier of a given task.
+            date: a numeric notation of date of the appointment. e.g. 20230421 => April 21, 2023
+            startTime: a numeric notation of the starting time of the appointment. e.g. 1820 => 18:20
+            duration: duration of the appointment. e.g. 4.5 => 4hrs 30 min
+        OUTPUT:
+            Function will fill the requested timeslots with the ID of the appointment.
+    */
+    int dayPos = dateToIndex(date);
+    int startHours = startTime / 100;
+    int startMinutes = startTime % 100;
+    int durationHrs = (int) duration;
+    int durationMinutes = (int) (( duration - durationHrs) * 60);
+    int endHours = startHours + durationHrs;
+    int endMinutes = startMinutes + durationMinutes;
+    if(endMinutes >= 60){
+        endHours += endMinutes / 60;
+        endMinutes = endMinutes % 60;
+    }
+    int endTime = (endHours*100) + endMinutes;
+
+    int i;
+    for(i=startTimeToIndex(startTime); i<=endTimeToIndex(endTime); i++){
+        timeTable[dayPos][i] = taskID;
+    }
+
+    // printf("Time: %d, Duration: %f, End: %d\n", startTime, duration, endTime);
+
+}
+
+void removeAppointmentFSFC(int timeTable[][TIMESLOTS_PER_DAY], int size, int id){
+    /*
+        This function removes an appointment with a given from the time table.
+        It is done by filling the slots which were occupied by the appointment with the -1(tomb value)
+        INPUT:
+            - timeTable: 2D array representaion of user's timetable.
+            - size: number of rows in timetable(days).
+            - id: unique identifier of the appointment to be removed.
+    */
+    int r, c;
+
+    for( r=0; r<size; r++){
+        for( c=0; c<TIMESLOTS_PER_DAY; c++){
+            if( timeTable[r][c] == id){
+                timeTable[r][c] = -1;
+            }
+        }
+    }
+}
+
+void printTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int size){
+    int colSize = 10;
+    printf("%*s", colSize, "Day");
+    printf("%*s", colSize, "18-19");
+    printf("%*s", colSize, "19-20");
+    printf("%*s", colSize, "20-21");
+    printf("%*s", colSize, "21-22");
+    printf("%*s", colSize, "22-23");
+    printf("\n");
+
+    int r, c;
+    for( r=0; r<size; r++){
+        printf("%*d", colSize, r+1);
+        for( c=0; c<TIMESLOTS_PER_DAY; c++ ){
+            printf("%*d", colSize, timeTable[r][c]);
+        }
+        printf("\n");
+    }
+
+}
+
+char* getMeeting(int cal[][COLS],int day_num){
+    int i,j;
+    char *result=(char*)malloc(sizeof(char)*BUF_SIZE);
+    strcpy(result,"");
+    for(i=0;i<day_num;i++){
+        for(j=0;j<COLS;j++){
+            if(j==0){
+                if(cal[i][0]!=-1){
+                    printf("Meeting = %d\n",cal[i][j]);
+                    sprintf(result,"%s %d",result,cal[i][j]);
+                }
+            }
+            else if(cal[i][j]!=cal[i][j-1]&&cal[i][j]!=-1){
+                sprintf(result,"%s %d",result,cal[i][j]);
+            }
+        }
+    }
+    return result;
+}
+struct Appointment* FAPO(struct Appointment **head,int m_id){
+    struct Appointment *second=*head;
+    while(second!=NULL){
+        if(second->id==m_id){
+            return second;
+        }
+        second=second->next;
+    }
+    return NULL;
+}
+
+char* print_Appointment(struct Appointment *node){
+    char *result=(char*)malloc(sizeof(char)*1000);
+    strcpy(result, "");
+
+    char type[17];
+    if(strcmp(node->type, "privateTime")){
+        strcpy(type, "Private Time     ");
+    }
+    else if(strcmp(node->type, "projectMeeting")){
+        strcpy(type, "Project Meeting  ");
+    }
+    else if(strcmp(node->type, "groupStudy")){
+        strcpy(type, "Group Study      ");
+    }
+    else if(strcmp(node->type, "gathering")){
+        strcpy(type, "Gathering        ");
+    }
+    
+    int start_h, start_m, end_h, end_m, dur, carry = 0;
+    start_h = (node->startTime) / 100;
+    start_m = (node->startTime) - start_h * 100;
+    dur = (node->duration) * 60;
+    end_m = start_m + dur % 60;
+    if(end_m >= 60) { end_m -= 60; carry++; }
+    end_h = start_h + dur / 60 + carry;
+
+    sprintf(result, "%s%c%c%c%c-%c%c-%c%c   %02d:%02d   %02d:%02d   %s", 
+        result, node->date[0], node->date[1], node->date[2], node->date[3], node->date[4], node->date[5], 
+        node->date[6], node->date[7], start_h, start_m, end_h, end_m, type);
+
+    int i;
+    char name[NAME_SIZE];
+    for(i = 1; i < node->all_num; i++)
+    {
+        strcpy(name, node->all_name[i]);
+        name[0] -= ('a' - 'A');
+        sprintf(result, "%s %s",result, name);
+    }
+
+    sprintf(result, "%s\n",result);
+
+    return result;
+}
+//------------------------------------------------------------------------------------
+
 
 int main(int argc, char *argv[]) {
     // start the program
     int i;
     int childNumber = argc-3; 
     int general_id=0;
+    char pPretext[100];
+    sprintf(pPretext, "Parent message: ");
+
     // names list
     char(*name)[NAME_SIZE] = (char(*)[NAME_SIZE])malloc(sizeof(char) * (argc - 3) * NAME_SIZE);
     for(i = 0; i < childNumber; i++){
@@ -171,12 +405,12 @@ int main(int argc, char *argv[]) {
     if(childNumber < 3 || childNumber > 10){
         printf("*the number of users is not in the range 3 to 10*\n"); 
         exit(1);
-    } 
+    }
 
 /*--------pipe-------*/
     int p2c[childNumber][2];	// parent to child
     int c2p[childNumber][2];    // child to parent
-    char p2cBuf[80], c2pBuf[80];
+    char p2cBuf[BUF_SIZE], c2pBuf[BUF_SIZE];
     //pipe error 
     for(i = 0; i < childNumber; i++){
         if (pipe(&p2c[i][0]) < 0) {
@@ -201,64 +435,78 @@ int main(int argc, char *argv[]) {
         }    
         // child process
 		else if(childId == 0) {
-            // close the unused pipes
+            // -------------------[CHILD] CLOSE UNUSED PIPES-------------------
 			close(p2c[i][1]);
             close(c2p[i][0]);
-            char p2cBuf[80];
-            char c2pBuf[80];
+            //-----------------------------------------------------------------
+            char p2cBuf[BUF_SIZE];
+            char c2pBuf[BUF_SIZE];
             // timeTable
             int counter;
             int j;
-            //int (*arr)[M] = malloc(sizeof(int[N][M]));
+            char cPretext[100];
+            sprintf(cPretext, "User: %s, message: ", name[i]);
             int (*timetable)[COLS] = malloc(sizeof(int[days][COLS]));
             int (*pTimetable)[COLS] = malloc(sizeof(int[days][COLS]));
-            // int (*timetable)[COLS] = (*int[COLS])malloc(sizeof(int) * COLS * days);
-            // int (*pTimetable)[COLS] = (*int[COLS])malloc(sizeof(int) * COLS * days);
 
-            //int *a = (int *)malloc(row * col * sizeof(int));
-
-            // int** timetable = (int*)malloc(days * sizeof(int));
-            // for (i = 0; i < days; i++){
-            //     timetable[i] = (int*)malloc(COLS* sizeof(int));
-            // }
-            // int** pTimetable = (int*)malloc(days * sizeof(int));
-            // for (i = 0; i < days; i++){
-            //     pTimetable[i] = (int*)malloc(COLS* sizeof(int));
-            // }
             for (counter = 0; counter < days; counter++) {
                 for (j = 0; j < COLS; j++) {
                     timetable[counter][j] = -1;
                     pTimetable[counter][j] = -1;
                 }
             }
-            // printf("Timetable %d\n",i);
-            // print2Darray(timetable,days);
-            // printf("\n");
-            // printf("pTimtable %d\n",i);
-            // print2Darray(pTimetable,days);
+
             int n;
-            while(n = read(p2c[i][0], p2cBuf, 80) > 0){
+            while((n = read(p2c[i][0], p2cBuf, BUF_SIZE)) > 0){
+                p2cBuf[n] = 0;
+                printf("%s Received message: %s\n", cPretext, p2cBuf);
                 if(strcmp(p2cBuf,"FCFS") == 0){
-                    write(c2p[i][1],"done",80);
-                    while(1){
-                        read(p2c[i][0],p2cBuf,80);
-                        // printf("%s\n",p2cBuf);
-                        if(strcmp(p2cBuf,"finish")==0){
-                            write(c2p[i][1], "done", 80);
-                            break;
-                        }
-                        else{
-                            struct Appointment *appointment=(struct Appointment*)malloc(sizeof(struct Appointment));
-                            appointment=creation(p2cBuf);
-                            printf("appointment %s\n",appointment->type);
-                            write(c2p[i][1], "done", 80);
-                            /* check availability */
-                            //checkAv(int day, int startTime, float duration, int timetable[][COLS])
-                            printf("%s %d\n",name[i],checkAv(appointment->date,appointment->startTime,appointment->duration,timetable));
-                        }
-                    }
+                    write(c2p[i][1],"done",BUF_SIZE);
                 }
+
+                else if( strcmp(p2cBuf,"finish") == 0 ){
+                    //reset the algorithm
+                    printf("%s Finished\n", cPretext);
+                    char *child_meeting=getMeeting(timetable,days);
+                    strcpy(c2pBuf,child_meeting);
+                    write(c2p[i][1], c2pBuf, BUF_SIZE);
+                }
+
                 else if(strcmp(p2cBuf,"endProgram") == 0) exit(0);
+
+                else{//when the incoming command is an appointment
+                    char temp[80];
+                    struct Appointment *appointment=(struct Appointment*)malloc(sizeof(struct Appointment));
+                    strcpy(temp,p2cBuf);
+                    char *ID=strtok(temp," ");
+                    char *information=strtok(NULL,"");
+                    appointment=creation(information);
+                    appointment->id=atoi(ID);
+                    printf("%s appointment %d\n", cPretext, appointment->id);
+                    int availability=checkAv(appointment->date,appointment->startTime,appointment->duration,timetable);
+                    if(availability==0){
+                        write(c2p[i][1], "n", BUF_SIZE);
+                        printf("%s Not available\n", cPretext);
+                    }
+                    else{
+                        write(c2p[i][1], "y", BUF_SIZE);
+                        printf("%s Available\n", cPretext);
+                    }
+                    n = read(p2c[i][0],p2cBuf,BUF_SIZE);
+                    p2cBuf[n] = 0;
+                    if(strcmp(p2cBuf,"schedule")==0){
+                        /*to schedule the meeting*/
+                        assignFCFS(timetable, appointment->id, atoi(appointment->date), appointment->startTime, appointment->duration);
+                        printf("%s Appointment No. %d is scheduled\n", cPretext, appointment->id);
+                        printTimeTable(timetable, days);
+                        write(c2p[i][1],"finish",BUF_SIZE);
+                    }
+                    else{
+                        printf("%s Appointment No. %d is rejected\n", cPretext, appointment->id);
+                        write(c2p[i][1],"finish", BUF_SIZE);
+                    }
+
+                }
             }
 		}
         else if(childId > 0) {
@@ -274,42 +522,31 @@ int main(int argc, char *argv[]) {
     head->id=-1;
     while(1){ 
         printf("Please enter appointment:\n");
+
+        //-----------------[PARENT] INPUT READING & PARSING -----------------------
         gets(input);
         int len=strlen(input);
         strcpy(p2cBuf, input);
-        char temp[80];
+        char temp[BUF_SIZE];
         strcpy(temp,input);
         char* token=strtok (temp, " ");
+        //------------------------------------------------------------------------
+
         if(strcmp("endProgram", input) == 0){ // end Program
             for(i=0;i<childNumber;i++){
                 write(p2c[i][1],p2cBuf,len);
             }
             break;
         }
-        else if(strcmp("privateTime", token) == 0){
+
+        else if( isAppointmentCommand(token) ) {
+            printf("normal command: %s\n", token);
             general_id++;
             struct Appointment *appointment = creation(input);
-            appointment->general_id;
+            appointment->id=general_id;
             insertlast(appointment, &head);
         }
-        else if(strcmp("projectMeeting", token) == 0){
-            general_id++;
-            struct Appointment *appointment = creation(input);
-            appointment->general_id;
-            insertlast(appointment, &head);
-        }
-        else if(strcmp("groupStudy", token) == 0){
-            general_id++;
-            struct Appointment *appointment = creation(input);
-            appointment->general_id;
-            insertlast(appointment, &head);
-        }
-        else if(strcmp("gathering", token) == 0){
-            general_id++;
-            struct Appointment *appointment = creation(input);
-            appointment->general_id;
-            insertlast(appointment, &head);
-        }
+
         else if(strcmp("printSchd", token) == 0){
             token = strtok(NULL, " ");
             struct Appointment *second=(struct Appointment*)malloc(sizeof(struct Appointment));
@@ -317,81 +554,94 @@ int main(int argc, char *argv[]) {
             int index;
             second=head;
             if(strcmp(token, "FCFS") == 0){
+
+            //---------------------[PARENT] SENDING SCHEDULING SETUP MESSAGE---------------------
                 strcpy(p2cBuf, "FCFS");
                 for(index = 0; index < childNumber; index++){
-                    write(p2c[index][1], p2cBuf, 80);
-                    read(c2p[index][0], c2pBuf, 80);
+                    write(p2c[index][1], p2cBuf, BUF_SIZE);
+                    read(c2p[index][0], c2pBuf, BUF_SIZE);
                 }
+            //-----------------------------------------------------------------------
+            
+            //------------------------[PARENT] DISPATCHING APPOINTMENTS TO USERS----------------------
                 second = second->next;
+                int count=0;
                 while(second != NULL){
+                    count++;
                     printf("%s\n",second->type);
+                    char id_str[BUF_SIZE];
+
+                    sprintf(p2cBuf,"%d %s",second->id,second->sentence);
+                    printf("%s [Request] %s\n", pPretext, second->sentence);
                     for(index = 0; index < second->all_num; index++){//only read once in the child in the process
                         int ID = getIDByName(second->all_name[index],name, childNumber);
-                        write(p2c[ID][1], second->sentence, 80);
-                        read(c2p[ID][0], c2pBuf, 80);
+                        write(p2c[ID][1],p2cBuf, BUF_SIZE);
+                        read(c2p[ID][0], c2pBuf, BUF_SIZE);
                         if(strcmp(c2pBuf, "n") == 0){//the child cannot schedule the meeting
                             second->able = false;
                             break;
                         }
                     }
                     if(second->able){
+                        printf("%s All particants are available\n", pPretext);
                         strcpy(p2cBuf, "schedule");
                     }
                     else{
+                        printf("%s All particants are not available\n", pPretext);
                         strcpy(p2cBuf, "reject");
                     }
                     for(index=0; index < second->all_num; index++){//only read once in the child in the process
                         int ID = getIDByName(second->all_name[index],name, childNumber);
-                        write(p2c[ID][1], p2cBuf, 80);
-                        read(c2p[ID][0], c2pBuf, 80);
+                        write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                        read(c2p[ID][0], c2pBuf, BUF_SIZE);
                     }
                     second = second->next;
                 }
+            //----------------------------------------------------------------------------------
+            
             }
             // else if(strcmp(token, "PRIORITY") == 0){
                 
             // }
+
+            //------------------[PARENT] END-SCHEDULING MESSAGE TO CHILDREN-----------------------------
             strcpy(p2cBuf, "finish");//all the meeting messeages finished sending
             for(index = 0; index < childNumber; index++){
-                write(p2c[index][1], p2cBuf, 80);
-                read(c2p[index][0], c2pBuf, 80);
+                write(p2c[index][1], p2cBuf, BUF_SIZE);
+                read(c2p[index][0], c2pBuf, BUF_SIZE);
+                printf("%s\n",c2pBuf);
+                char temp[BUF_SIZE];
+                strcpy(temp,c2pBuf);
+                char *token=strtok(temp," ");
+                while(token != NULL){
+                    //printf("%s\n", token);
+                    int m_id=atoi(token);
+                    struct Appointment *meeting=FAPO(&head,m_id);
+                    // printf("Arranged_meeting %d\n",meeting->id);
+                    token = strtok (NULL, " ");
+                    printf("%s\n",print_Appointment(meeting));
+                }
             }
+            //-------------------------------------------------------------------------------
         }
         else{
             printf("Wrong command!\n");
             continue;
         }
     }
+    //----------------[PARENT] CHILDREN COLLECTION ---------------------------------
     for (i = 0; i < childNumber; i++) { 
         wait(NULL);
     }
+    //------------------------------------------------------------------------------
     printf("parent jobs finished!!\n");
     exit(0);
 }
 
-// int getIDByName(char target_name[], char names[][NAME_SIZE],int childNumber){
-//     // int i;
-//     // for (i = 0; i < childNumber; i++) {
-//     //     char str1[20] = {(*name)[i] , '\0'};
-//     //     char str2[20] = "";
-//     //     strcpy(str2, str1);
-//     //     if (strcmp(singleName, str2) == 0) {
-//     //         return i;
-//     //     }
-//     // }
-//     // return -1;
-//     int index=0;
-//     for(index=0;index<childNumberindex++){
-//         if(strcmp(names[index],target_name)==0){
-//             return index;
-//         }
-//     }
-// }
-
+// get the userId by input na
 int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNumber) {
     int i;
     for (i = 0; i < childNumber; i++) {
-        printf("%s\n",names[i]);
         if (strcmp(singleName, names[i]) == 0) {
             return i;
         }
@@ -399,98 +649,9 @@ int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNu
     return -1;
 }
 
-// scheduling the appointment [from user]
-void scheduling(task, timetable) {
-    
-}
-
-// Scheduling kernel - use at least 2 scheduling algorithms [from program]
-void schedulingKernel() {
-
-}
-
-// FCFS Scheduling Algorithm
-// void schedulingAlgorithm1(int timetable[][]) {
-//     int i;
-//     Appointment *rejectList[list_length()];
-    
-//     while (list_next() == NULL) {
-//         Appointment *task = list_next();
-//         if (timeChecking(task -> startTime, task -> duration, timetable)) {
-//             scheduling(*task, timetable);
-//         } else {
-//             *(rejectList + i) = task;
-//             i++;
-//             // rescheduling();
-//         }
-//     }
-// }
-
-// void schedulingAlgorithm1_SendingFromParent(LinkList list) {
-//     int id;
-//     while (list.next == NULL) {
-//         if (getIDByName(list.name)) {
-//             Appointment *task = list.next;
-//             write(p2c[id][1],buf,len);
-//         }
-//     }
-// }
-
-// void schedulingAlgorithm1_ReceiverFromChild(int timetable[][]) {
-//     int i;
-//     Appointment *rejectList[list_length()];
-//     read(p2c[i][1], buf, len);
-
-//     if (timeChecking(task.startTime, task.duration, timetable)) {
-//         scheduling(buf);
-//     } else {
-//         *(rejectList + i) = task;
-//         i++;
-//             // rescheduling();
-//     }
-// }
-
-
-// Priority Scheduling Algorithm
-void schedulingAlgorithm2() {
-    
-}
-
-// checking the appointment time range is avaible or not [from program]
-int timeChecking() {
-
-}
-
-void rescheduling() {
-
-}
-
-
-
-// cancel the appointment
-void cancelAppointment() {
-
-}
-
 // create .txt file & store the records to the file
 void logRecords() {
     char *logFile = "./output/log.txt";
     FILE *fp = fopen(logFile, "a+");
-
-    
-    
 }
 
-void logAppointmentSchedule() {
-
-}
-
-// log the rejected list and attach the reason why reject
-void logRejectedList() {
-
-}
-
-// print the analyze performance report for user
-void performanceReport() {
-
-}
