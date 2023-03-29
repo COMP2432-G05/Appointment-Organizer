@@ -1,7 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
 #define NAME_SIZE 20
+
+bool isIn(char c_name[NAME_SIZE], struct Appointment *node){
+    int i;
+    for(i = 0; i < node->all_num; i++)
+    {
+        if(strcmp(c_name, node->all_name[i]) == 0) { return true; }
+    }
+    return false;
+}
 
 int readFileSeq(int algMode) {
     int i = 0;
@@ -43,6 +54,8 @@ int readFileSeq(int algMode) {
 
     return -1;
 }
+
+
 
 void updateFileSeq(int algMode) {
     int i = 0;
@@ -87,14 +100,20 @@ void updateFileSeq(int algMode) {
     fputs(buffer, wr);
     fclose(rd);
     fclose(wr);
-    printf("%d %d %d\n", seqFCFS, seqP, seqALL);
 }
 
-void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], int countAppointmentFromUser, char algorithms[0][20], int algNum) {
-    int userNum = 4;
+
+void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], char algorithms[2][20], int algNum, struct Appointment **head, int userNum) {
     int i;
     char logFile[20];
     int seq = 0;
+
+    struct Appointment tempNode=(struct Appointment)malloc(sizeof(struct Appointment));
+    tempNode = *head;
+    tempNode = tempNode->next;
+    int name_id;
+    char *t_sentence;
+    int appointmentCountbyUser[userNum];
 
     if (algNum == 1) {
         if (strcmp(algorithms[0], "FCFS") == 0) {
@@ -121,7 +140,6 @@ void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], int 
     }
 
     FILE *fp = fp;
-    fopen(logFile, "w");
     fp = fopen(logFile, "a+");
 
     int algI;
@@ -164,35 +182,108 @@ void logRecords(char name[][NAME_SIZE], char startDate[9], char endDate[9], int 
         for (i = 0; i < userNum; i++) {
             fputs("    ", fp);
             fputs(name[i], fp);
-            fputs(", you have ", fp);
-            fputs("999", fp);
-            // fputs(countAppointmentFromUser, fp);
-            fputs(" appointments.\n", fp);
-            fputs("Date      Start      End      Type      People\n", fp);
+            fputs(": ", fp);
+            fputs("\n", fp);
+            fputs("Date         Start   End     Type             People\n", fp);
             fputs("=========================================================================\n", fp);
+
+            int appointmentCount = 0;
+            while(tempNode != NULL) {
+                if(tempNode->able) {
+                    name_id = getIDByName(tempNode->host_name, names, userNum);
+                    if (isIn(name[i], tempNode)) {
+                        strcpy(t_sentence, print_Appointment(tempNode));
+                        appointmentCount++;
+                    }
+                }
+                tempNode = tempNode->next;
+                fputs(t_sentence, fp);
+            }
             fputs("\n", fp);
-            fputs("\n", fp);
-            fputs("\n", fp);
+            fputs("    ", fp);
+            fputs(name[i], fp);
+            fputs(", you have ", fp);
+            fputs(appointmentCount, fp);
+            appointmentCountbyUser[i] = appointmentCount;
+            fputs(" appointments.\n", fp);
 
             fputs("                      - End of ", fp);
             fputs(name[i], fp);
             fputs("'s Schedule -\n", fp);
             fputs("=========================================================================\n", fp);
-            fputs("\n", fp);
-            fputs("\n", fp);
+            fputs("\n\n", fp);
         }
     }
+    fputs("\n***Rejected List***\n", fp);
+    int rejectedNum = 0;
+    fputs("=========================================================================", fp);
+    while(tempNode != NULL) {
+        if(tempNode->able == false) {
+            fputs(rejectedNum++, fp);
+            fputs(". ", fp);
+            strcpy(t_sentence, print_Appointment(tempNode));
+            fputs(t_sentence, fp);
+        }
+        tempNode = tempNode->next;
+    }
+    fputs("\n\nAltogether there are", fp);
+    fputs(rejectedNum, fp);
+    fputs("appointments rejected.\n\n", fp);
+    fputs("                      - End of Rejected List -", fp);
+    fputs("=========================================================================", fp);
     
+    fputs("\n\n", fp);
+
+    int numOfReceived = 0;
+    while(tempNode != NULL) {
+        numOfReceived++;
+        tempNode = tempNode->next;
+    }
+
+    fputs("*** Performance ***\nTotal\n", fp);
+
+    fputs("Number of Requests Received: ", fp);
+    fputs(numOfReceived, fp);
+    fputs(" (", fp);
+    fputs("100%%)\n", fp);
+    fputs("\n", fp);
+
+    fputs("Number of Requests Accepted: ", fp);
+    int acceptedNum = numOfReceived - rejectedNum;
+    float acceptRate = acceptedNum / (float)numOfReceived;
+    char acceptRateStr[20];
+    fputs(acceptedNum, fp);
+    sprintf(acceptRateStr, " (%.1f%%)\n", acceptRate);
+    fputs(acceptRateStr, fp);
+
+    fputs("Number of Requests Rejected: ", fp);
+    float rejectedRate = rejectedNum / (float)numOfReceived;
+    char rejectedRateStr[20];
+    fputs(rejectedNum, fp);
+    sprintf(rejectedRateStr, " (%.1f%%)\n", rejectedRate);
+    fputs(rejectedRateStr, fp);
+    
+    fputs("\n\n\n", fp);
+    
+    fputs("Number of Requests Accepted by Individual:\n", fp);
+    for (i = 0; i < userNum; i++) {
+        fputs(name[i], fp);
+        fputs("   -->  ", fp);
+        fputs(appointmentCountbyUser[i], fp);
+        fputs("\n", fp);
+    }
+    fputs("\n\n\n", fp);
+
+    fputs("Utilization of Time Slot:\n", fp);
+    for (i = 0; i < userNum; i++) {
+        fputs(name[i], fp);
+        fputs("   -->  ", fp);
+        fputs("\n", fp);
+    }
+    fputs("\n\n", fp);
 }
 
-// Calculate the total days 20230415 - 20230430
-int daysCal(char *startDate, char *endDate){
-    int start = atoi(startDate);
-    int end = atoi(endDate);
-    int days = end-start+1;
-    
-    return days;
-}
+
 
 int main(int argc, char *argv[]) {
     char startDate[9];
@@ -201,8 +292,6 @@ int main(int argc, char *argv[]) {
     strcpy(startDate, "20230401");
     strcpy(endDate, "20230430");
 
-    daysCal(startDate,endDate);
-    // // start the program
     int i;
     int childNumber = argc - 3; 
     // names list
@@ -212,11 +301,12 @@ int main(int argc, char *argv[]) {
     }
 
     // char algorithms[2][20] = {"FCFS"};
-    char algorithms[2][20] = {"ALL"};
+    char algorithms[2][20] = {"FCFS"};
 
     int algNum = 1;
+    int userNum = 4;
 
-    logRecords(name, startDate, endDate, 999, algorithms, algNum);
+    logRecords(name, startDate, endDate, algorithms, algNum, head, userNum);
 
     return 0;
 }
