@@ -695,6 +695,7 @@ int main(int argc, char *argv[]) {
     create = fopen("./seq.txt", "a+");
     updateFileSeq(0);
     updateFileSeq(1);
+    updateFileSeq(2);
     close(create);
     // names list
     char(*name)[NAME_SIZE] = (char(*)[NAME_SIZE])malloc(sizeof(char) * (argc - 3) * NAME_SIZE);
@@ -925,7 +926,7 @@ int main(int argc, char *argv[]) {
     struct Appointment *head=(struct Appointment*)malloc(sizeof(struct Appointment));
     head->id=-1;
     int alive = 1;
-    while(alive == 1){ 
+    while(alive == 1){
         printf("Please enter appointment:\n");
 
         //-----------------[PARENT] INPUT READING & PARSING -----------------------
@@ -1399,3 +1400,5 @@ int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNu
     }
     return -1;
 }
+
+

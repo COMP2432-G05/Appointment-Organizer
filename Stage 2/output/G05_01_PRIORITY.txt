@@ -1,0 +1,61 @@
+Period: 2023-05-01 to 2023-05-31
+Algorithm used: PRIORITY
+
+***Appointment Schedule***
+
+a,you have 10 appointments
+Date         Start    End      Type           People
+========================================================
+2023-05-01   18:00   20:00   Private Time     
+2023-05-02   18:00   20:00   Group Study       B C
+2023-05-03   20:00   21:00   Project Meeting   => 20230501 2100 B C
+2023-05-04   18:00   20:00   Private Time     
+2023-05-04   21:00   23:00   Private Time      => 20230502 2000
+2023-05-05   18:00   21:00   Project Meeting   A C
+2023-05-05   21:00   23:00   Gathering         B C
+2023-05-06   20:00   23:00   Private Time     
+2023-05-07   18:00   23:00   Project Meeting   B C
+2023-05-08   21:00   23:00   Private Time     
+               - End of a's Schedule -
+========================================================
+
+
+b,you have 9 appointments
+Date         Start    End      Type           People
+========================================================
+2023-05-01   20:00   21:00   Private Time     
+2023-05-02   18:00   20:00   Group Study       B C
+2023-05-03   20:00   21:00   Project Meeting   => 20230501 2100 B C
+2023-05-05   18:00   21:00   Project Meeting   A C
+2023-05-05   21:00   23:00   Gathering         B C
+2023-05-06   19:00   21:00   Private Time     
+2023-05-06   21:00   23:00   Group Study       B
+2023-05-07   18:00   23:00   Project Meeting   B C
+2023-05-08   21:00   22:00   Private Time     
+               - End of b's Schedule -
+========================================================
+
+
+c,you have 9 appointments
+Date         Start    End      Type           People
+========================================================
+2023-05-02   18:00   20:00   Group Study       B C
+2023-05-02   20:00   21:00   Private Time     
+2023-05-03   20:00   21:00   Project Meeting   => 20230501 2100 B C
+2023-05-04   22:00   23:00   Private Time      => 20230501 1800
+2023-05-05   18:00   21:00   Project Meeting   A C
+2023-05-05   21:00   23:00   Gathering         B C
+2023-05-06   21:00   23:00   Group Study       B
+2023-05-07   18:00   23:00   Project Meeting   B C
+2023-05-08   20:00   21:00   Private Time      => 20230501 1900
+               - End of c's Schedule -
+========================================================
+
+
+d,you have 0 appointments
+Date         Start    End      Type           People
+========================================================
+               - End of d's Schedule -
+========================================================
+
+
