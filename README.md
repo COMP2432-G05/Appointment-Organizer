@@ -53,17 +53,27 @@ gcc G05_APO.c -o G05_APO -lm
 ## Example: use FCFS (print the schedules use the FCFS algorithms)
 > printSchd FCFS
 ## output sample:
+"""
+    Period: 2023-04-01 to 2023-04-30
+    Algorithm used: FCFS
 
+    ***Appointment Schedule***
+
+    john,you have 3 appointments
+    Date         Start    End      Type           People
+    ========================================================
+    2023-04-02   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+    2023-04-03   18:00   20:00   Group Study       John Lucy
+    2023-04-04   19:00   23:00   Gathering         John Paul Mary
+                   - End of john's Schedule -
+    ========================================================
+"""
 
 ## Example: use PIORITY (print the schedules use the PIORITY algorithms)
 > printSchd PIORITY
-## output sample:
-
 
 ## Example: use ALL (print the schedules use all the algorithms)
 > printSchd ALL
-## output sample:
-
 
 ```
 
