@@ -1,0 +1,9 @@
+privateTime paul 20230401 1800 2.0
+projectMeeting john 20230401 1900 2.0 paul mary
+privateTime mary 20230401 2000 3.0
+groupStudy paul 20230403 1800 2.0 john lucy
+gathering lucy 20230404 1900 4.0 john paul mary
+printSchd FCFS
+printSchd PRIORITY
+printSchd ALL
+endProgram

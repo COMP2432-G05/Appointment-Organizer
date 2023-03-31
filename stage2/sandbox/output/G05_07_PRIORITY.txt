@@ -1,0 +1,42 @@
+Period: 2023-04-01 to 2023-04-30
+Algorithm used: PRIORITY
+
+***Appointment Schedule***
+
+john,you have 2 appointments
+Date         Start    End      Type           People
+========================================================
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+               - End of john's Schedule -
+========================================================
+
+
+mary,you have 2 appointments
+Date         Start    End      Type           People
+========================================================
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+               - End of mary's Schedule -
+========================================================
+
+
+lucy,you have 2 appointments
+Date         Start    End      Type           People
+========================================================
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+               - End of lucy's Schedule -
+========================================================
+
+
+paul,you have 3 appointments
+Date         Start    End      Type           People
+========================================================
+2023-04-01   18:00   20:00   Private Time     
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+               - End of paul's Schedule -
+========================================================
+
+
