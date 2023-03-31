@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/davidjiang/Desktop/GithHub Repo/Appointment-Organizer/Stage 1",
-      "program": "/Users/davidjiang/Desktop/GithHub Repo/Appointment-Organizer/Stage 1/build/Debug/outDebug"
+      "cwd": "/Users/davidjiang/Desktop/GithHub Repo/Appointment-Organizer",
+      "program": "/Users/davidjiang/Desktop/GithHub Repo/Appointment-Organizer/build/Debug/outDebug"
     }
   ]
 }

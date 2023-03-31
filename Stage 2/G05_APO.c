@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <stdbool.h>
 
 #define NAME_SIZE 20
@@ -123,6 +125,7 @@ int durationIndex(int time, float duration){
     return res;
 }
 
+// time to index
 int timeToIndex(int time){
     if(time >= 1800 && time < 1900){
         return 0;
@@ -141,6 +144,7 @@ int timeToIndex(int time){
     }
 }
 
+// check which type of command user input
 int isAppointmentCommand(char* command){
     int res = 0;
     if( strcmp("privateTime", command) == 0) {
@@ -326,6 +330,7 @@ int getPiority(char *appointment){
     else return -1;
 }
 
+// remove the FCFS appointment from the timetable
 void removeAppointmentFSFC(int timeTable[][TIMESLOTS_PER_DAY], int size, int id){
     /*
         This function removes an appointment with a given from the time table.
@@ -346,6 +351,7 @@ void removeAppointmentFSFC(int timeTable[][TIMESLOTS_PER_DAY], int size, int id)
     }
 }
 
+// remove the appointment from the timetable by priority
 int removeAppointmentPriority(int timeTable[][TIMESLOTS_PER_DAY], int priorityTable[][TIMESLOTS_PER_DAY], int size, int id){
     int r, c;
     int is_removed=1;
@@ -361,35 +367,38 @@ int removeAppointmentPriority(int timeTable[][TIMESLOTS_PER_DAY], int priorityTa
     }
     return is_removed;
 }
-// void printTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int size){
-//     int colSize = 10;
-//     printf("%*s", colSize, "Day");
-//     printf("%*s", colSize, "18-19");
-//     printf("%*s", colSize, "19-20");
-//     printf("%*s", colSize, "20-21");
-//     printf("%*s", colSize, "21-22");
-//     printf("%*s", colSize, "22-23");
-//     printf("\n");
 
-//     int r, c;
-//     for( r=0; r<size; r++){
-//         printf("%*d", colSize, r+1);
-//         for( c=0; c<TIMESLOTS_PER_DAY; c++ ){
-//             printf("%*d", colSize, timeTable[r][c]);
-//         }
-//         printf("\n");
-//     }
+// print the timetable
+void printTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int size){
+    int colSize = 10;
+    printf("%*s", colSize, "Day");
+    printf("%*s", colSize, "18-19");
+    printf("%*s", colSize, "19-20");
+    printf("%*s", colSize, "20-21");
+    printf("%*s", colSize, "21-22");
+    printf("%*s", colSize, "22-23");
+    printf("\n");
 
-// }
-// /*-------------------------RESCHEDULING METHODS-----------------------*/
-// void printIntArray(int array[], int size){
-//     int i;
-//     for(i=0; i<size; i++){
-//         printf("%d ", array[i]);
-//     }
-//     printf("\n");
-// }
+    int r, c;
+    for( r=0; r<size; r++){
+        printf("%*d", colSize, r+1);
+        for( c=0; c<TIMESLOTS_PER_DAY; c++ ){
+            printf("%*d", colSize, timeTable[r][c]);
+        }
+        printf("\n");
+    }
 
+}
+/*-------------------------RESCHEDULING METHODS-----------------------*/
+void printIntArray(int array[], int size){
+    int i;
+    for(i=0; i<size; i++){
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
+
+// find the time slot for the time table use rescheduling algorithm
 int findRescheduleSlot(int map[][TIMESLOTS_PER_DAY], int days, int target, int n){
     int count=0;
     int isFound = 0;
@@ -413,6 +422,7 @@ int findRescheduleSlot(int map[][TIMESLOTS_PER_DAY], int days, int target, int n
     return slotNo;
 }
 
+// fill the time table with the task ID
 void fillTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int days, int taskID, int slotNo, int n){
     int row = getRowFromSlotNo(slotNo);
     int col = getColumnFromSlotNo(slotNo);
@@ -424,14 +434,17 @@ void fillTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int days, int taskID, int
     }
 }
 
+// get the row from the slot number
 int getRowFromSlotNo(int slotNo){
     return slotNo/10;
 }
 
+// get the column from the slot number
 int getColumnFromSlotNo(int slotNo){
     return slotNo%10;
 }
 
+// fill the availability time slot in time table
 void fillAvailability(int map[][TIMESLOTS_PER_DAY], int availabiltArray[], int n){
     int i;
     for( i=0; i<n; i++){
@@ -442,6 +455,7 @@ void fillAvailability(int map[][TIMESLOTS_PER_DAY], int availabiltArray[], int n
     }
 }
 
+// get the string from the int array
 void getStringFromIntArray(int array[], int size, char output[]){
     int i;
     output[0] = 0;
@@ -455,6 +469,7 @@ void getStringFromIntArray(int array[], int size, char output[]){
     }
 }
 
+// get the int array from the string
 int getIntArrayFromString(char str[], int output[]){
     int count = 0;
     char temp[MAX_MSG_SIZE];
@@ -468,6 +483,7 @@ int getIntArrayFromString(char str[], int output[]){
     return count;
 }
 
+// get the available slots from the timetable
 int getAvailableSlots(int timeTable[][TIMESLOTS_PER_DAY], int size, int output[MAX_TIME_SLOTS]){
     int count = 0;
     int i, j;
@@ -570,13 +586,13 @@ char* print_Appointment(struct Appointment *node){
     return result;
 }
 
-
+// for get the index of the time table
 int getPreID(char *date, int index, int timetable[][COLS]){
     int day=atoi(date)%100 -1;
     return timetable[day][index];
 }
 
-
+// for get the index of the time
 char* generateTBR(char *date, int time, float duration, int timetable[][COLS]){
     int i=0;
     int index = timeToIndex(time);
@@ -594,7 +610,7 @@ char* generateTBR(char *date, int time, float duration, int timetable[][COLS]){
     return toBeRemove;
 }
 
-
+// for reset the able of the appointment
 void clear_list(struct Appointment **head){
     struct Appointment *second=*head;
     while(second!=NULL){
@@ -603,7 +619,7 @@ void clear_list(struct Appointment **head){
     }
 }
 
-
+// for reset the timetable
 void resetTtb(int timetable[][COLS],int pTimetable[][COLS], int days){
     int counter, j;
     for (counter = 0; counter < days; counter++) {
@@ -722,13 +738,20 @@ void updateFileSeq(int algMode) {
 int main(int argc, char *argv[]) {
     // start the program
     int i;
+    int isRescheduleOn = 0;
     int childNumber = argc-3; 
     float general_id=0.0;
     char pPretext[100];
+    if (mkdir("output", 0777) == -1) {
+        printf("output folder already have \n");
+    } else {
+        printf("output folder created\n");
+    }
     sprintf(pPretext, "Parent message: ");
-    FILE *create;
+    FILE *create,*command_file;
     create = fopen("./seq.txt", "a+");
     close(create);
+    command_file=fopen("./ALL_Requests.txt","w");
     // names list
     char(*name)[NAME_SIZE] = (char(*)[NAME_SIZE])malloc(sizeof(char) * (argc - 3) * NAME_SIZE);
     for(i = 0; i < childNumber; i++){
@@ -826,8 +849,9 @@ int main(int argc, char *argv[]) {
                     strcpy(c2pBuf,get_ultilization_rate(name[i],timetable,days));
                     write(c2p[i][1],c2pBuf,BUF_SIZE);//send the utilization rate
                 }
+            /*------------------[CHILD-FCFS] RESCHEDULING MODULE-----------------------------------------------------------------------------------*/
                 else if( strcmp(p2cBuf,"reschedule") == 0 ){
-                    // printf("%s reschuling now\n", cPretext);
+                  printf("%s reschuling now\n", cPretext);
                     int availSlots[MAX_TIME_SLOTS];
                     int numberOfAvail = getAvailableSlots(timetable,days,availSlots);
                     char strOut[MAX_CHAR_SLOTNO];
@@ -838,17 +862,22 @@ int main(int argc, char *argv[]) {
 
                     n = read(p2c[i][0], p2cBuf, BUF_SIZE);
                     p2cBuf[n] =0;
-                    int rescheduleCode = atoi(p2cBuf);
-                    int slotNo = rescheduleCode % 100;
-                    int taskID = rescheduleCode / 10000;
-                    int slotsNeeded = (rescheduleCode / 1000) % 10;
-                    // printf("%s slot no:%d needed slots:%d\n", cPretext, slotNo, slotsNeeded);
-                    fillTimeTable(timetable, days, taskID, slotNo, slotsNeeded);
-                    // printTimeTable(timetable, days);
-                    // printf("Rescheduling finished\n");
-                    strcpy(c2pBuf, "reschedule done");
+                /*----------[CHILD] DECODING RESCHEDULING MESSAGE ---------------------*/
+                    if(strcmp(p2cBuf, "NO_SLOTS") !=0){
+                        int rescheduleCode = atoi(p2cBuf);
+                        int slotNo = rescheduleCode % 100;
+                        int taskID = rescheduleCode / 10000;
+                        int slotsNeeded = (rescheduleCode / 1000) % 10;
+                        printf("%s slot no:%d needed slots:%d\n", cPretext, slotNo, slotsNeeded);
+                        fillTimeTable(timetable, days, taskID, slotNo, slotsNeeded);
+                        // printTimeTable(timetable, days);
+                    }
+                    
+                    printf("Rescheduling protocols done\n");
+                    strcpy(c2pBuf, "reschedule response");
                     write(c2p[i][1], c2pBuf, BUF_SIZE);
                 }
+            /*---------------------------------------------------------------------------------------------------------------------------------*/
 
                 else if(strcmp(p2cBuf,"endProgram") == 0) exit(0);
 
@@ -921,6 +950,44 @@ int main(int argc, char *argv[]) {
                     else if(strcmp(p2cBuf,"reject")==0){//if the meeting have been reject
                         write(c2p[i][1],"done",BUF_SIZE);
                     }
+                /*-----------------------------[CHILD-PRIORITY] RESCHEDULING MODULE ----------------------------------------------------------------*/
+                    else if(strcmp(p2cBuf, "reschedule") == 0){
+                        printf("%s reschuling now\n", cPretext);
+                        int availSlots[MAX_TIME_SLOTS];
+                        int numberOfAvail = getAvailableSlots(timetable,days,availSlots);
+                        char strOut[MAX_CHAR_SLOTNO];
+                        getStringFromIntArray(availSlots, numberOfAvail,strOut);
+                        // printf("%s available: %s\n", cPretext, strOut);
+                        strcpy(c2pBuf, strOut);
+                        write(c2p[i][1], c2pBuf, BUF_SIZE);
+
+                        n = read(p2c[i][0], p2cBuf, BUF_SIZE);
+                        p2cBuf[n] =0;
+                    /*----------[CHILD] DECODING RESCHEDULING MESSAGE ---------------------*/
+                        if(strcmp(p2cBuf, "NO_SLOTS") !=0 ){
+                            char temp[BUF_SIZE];
+                            strcpy(temp, p2cBuf);
+                            char *token;
+                            token = strtok(temp, " ");
+                            int rescheduleCode = atoi(token);
+                            int slotNo = rescheduleCode % 100;
+                            int taskID = rescheduleCode / 10000;
+                            int slotsNeeded = (rescheduleCode / 1000) % 10;
+
+                            token = strtok(NULL, " ");
+                            int priority = atoi(token);
+                            printf("%s slot no:%d needed slots:%d priority: %d\n", cPretext, slotNo, slotsNeeded, priority);
+                            fillTimeTable(timetable, days, taskID, slotNo, slotsNeeded);
+                            fillTimeTable(pTimetable, days, priority, slotNo, slotsNeeded);
+                            // printTimeTable(timetable, days);
+                        }
+                        printf("Rescheduling finished\n");
+                        strcpy(c2pBuf, "reschedule response");
+                        write(c2p[i][1], c2pBuf, BUF_SIZE);
+                    /*----------------------------------------------------------------------*/
+
+                    }
+                /*---------------------------------------------------------------------------------------------------------------------------------*/
                     else{
                         char temp[80];//To hold a meeting
                         strcpy(temp,p2cBuf);
@@ -971,7 +1038,6 @@ int main(int argc, char *argv[]) {
         strcpy(temp,input);
         char* token=strtok (temp, " ");
         //------------------------------------------------------------------------
-
         if(strcmp("endProgram", input) == 0){ // end Program
             for(i=0;i<childNumber;i++){
                 write(p2c[i][1],p2cBuf,len);
@@ -979,12 +1045,21 @@ int main(int argc, char *argv[]) {
                 close(c2p[i][0]);
             }
             alive = 0;
+            close(command_file);
+            close(create);
             break;
+        }
+        else if(strcmp("rescheduling", input) == 0){
+            printf("!!!!!!!!Rescheduling activated\n");
+            isRescheduleOn = 1;
         }
 
         else if( isAppointmentCommand(token) ) {
             printf("normal command: %s\n", token);
             general_id++;
+            char temp_input[BUF_SIZE];
+            sprintf(temp_input,"%s\n",input);
+            fputs(temp_input,command_file);
             struct Appointment *appointment = creation(input);
             appointment->id=general_id;
             insertlast(appointment, &head);
@@ -1021,7 +1096,7 @@ int main(int argc, char *argv[]) {
                 algNum=1;
             }
             fp=fopen(logFile,"a+");
-            rj_file=fopen("rejected.dat","w");
+            rj_file=fopen("./output/G05_rejected.dat","w");
             float request_accept;
             float request_reject;
             if(strcmp(token, "FCFS")==0 || strcmp(token,"ALL")==0){
@@ -1060,6 +1135,8 @@ int main(int argc, char *argv[]) {
                 fputs("***Appointment Schedule***\n\n", fp);
                 char reject_num[BUF_SIZE];
                 char utilization_time[BUF_SIZE];
+                strcpy(reject_num,"");
+                strcpy(utilization_time,"");
                 fputs("\n*** Rejected List(FCFS)***\n",rj_file);
                 request_accept=0;
                 request_accept=0;
@@ -1105,43 +1182,59 @@ int main(int argc, char *argv[]) {
                         write(p2c[ID][1], p2cBuf, BUF_SIZE);
                         read(c2p[ID][0], c2pBuf, BUF_SIZE);
                     }
-                    /*----------------------------RESCHEDULE MODULE--------------------------------*/
-                    if( isRejected == 1){
+                /*----------------------------[PARENT-FCFS]RESCHEDULE MODULE-------------------------------------------------------------------*/
+                    if( isRejected == 1 && isRescheduleOn == 1){
                         int (*availabilityMap)[TIMESLOTS_PER_DAY] = malloc(sizeof(int[days][TIMESLOTS_PER_DAY]));
                         printf("=====>Rescheduling . . . \n");
                         for(index=0; index < second->all_num; index++){//only read once in the child in the process
                             int ID = getIDByName(second->all_name[index],name, childNumber);
                             strcpy(p2cBuf, "reschedule");
                             write(p2c[ID][1], p2cBuf, BUF_SIZE);
-                            // printf("Parent: %s sent to %s\n", p2cBuf, name[index]);
+                            printf("Parent: %s sent to %s\n", p2cBuf, name[index]);
                             //x is for number of bytes sent
                             int x = read(c2p[ID][0], c2pBuf, BUF_SIZE);
                             c2pBuf[x] = 0;
                             int slotsArr[MAX_TIME_SLOTS];
                             int nbrOfSlots = getIntArrayFromString(c2pBuf, slotsArr);
-                            // printf("Parent: %s slots: ", name[ID]);
-                            // printIntArray(slotsArr, nbrOfSlots);
+                            printf("Parent: %s slots: ", name[ID]);
+                            printIntArray(slotsArr, nbrOfSlots);
                             // printTimeTable(availabilityMap, days);
                             fillAvailability(availabilityMap, slotsArr, nbrOfSlots);
                             // printTimeTable(availabilityMap, days);
                         }
                         int slotsNeeded = ceil(second->duration);
                         int commonSlot = findRescheduleSlot(availabilityMap,days,second->all_num,slotsNeeded);
-                        int rescheduleCode = (second->id*10000) + (slotsNeeded*1000) + commonSlot;
-                        sprintf(p2cBuf, "%d", rescheduleCode);
-                        // printf("Parent: slot No: %d needed: %d\n", rescheduleCode, slotsNeeded);
+                        
+                        if(commonSlot < 0){
+                            strcpy(p2c,"NO_SLOTS");
 
-                        for(index=0; index < second->all_num; index++){//only read once in the child in the process
-                            int ID = getIDByName(second->all_name[index],name, childNumber);
-                            write(p2c[ID][1], p2cBuf, BUF_SIZE);
-                            read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            for(index=0; index < second->all_num; index++){//only read once in the child in the process
+                                int ID = getIDByName(second->all_name[index],name, childNumber);
+                                write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                                read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            }
+                            printf("Rescheduling slots not found\n");
                         }
-                        //updating the structure
-                        second->isRescheduled = 1;
-                        second->newStartTime = ((commonSlot%10) * 100) + 1800;
-                        sprintf(second->newDate, "%d", atoi(startDate) + (commonSlot/10));
+                        else{
+                            int rescheduleCode = (second->id*10000) + (slotsNeeded*1000) + commonSlot;
+                            sprintf(p2cBuf, "%d", rescheduleCode);
+                            printf("Parent: slot No: %d needed: %d\n", rescheduleCode, slotsNeeded);
+
+                            for(index=0; index < second->all_num; index++){//only read once in the child in the process
+                                int ID = getIDByName(second->all_name[index],name, childNumber);
+                                write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                                read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            }
+                            //updating the structure
+                            second->isRescheduled = 1;
+                            second->able = true;
+                            second->newStartTime = ((commonSlot%10) * 100) + 1800;
+                            sprintf(second->newDate, "%d", atoi(startDate) + (commonSlot/10));
+                        }
+                        
+                        
                     }
-                    /*------------------------------------------------------------------------------*/
+                /*---------------------------------------------------------------------------------------------------------------------------------*/
                     second = second->next;
                 }
                 strcpy(p2cBuf, "finish");//all the meeting messeages finished sending
@@ -1157,6 +1250,8 @@ int main(int argc, char *argv[]) {
                     char firstline[BUF_SIZE];
                     strcpy(written,"");
                     strcpy(firstline,"");
+                    request_accept=0;
+                    request_reject=0;
                     while(token != NULL){
                         int m_id=atoi(token);
                         count++;
@@ -1323,11 +1418,58 @@ int main(int argc, char *argv[]) {
                         write(p2c[ID][1], p2cBuf, BUF_SIZE);
                         read(c2p[ID][0], c2pBuf, BUF_SIZE);
                     }
-                    /*----------------------------RESCHEDULE MODULE--------------------------------*/
-                    if( isRejected == 1){
-                        printf("Rescheduling . . . \n");
+
+                /*----------------------------[PARENT-PRIORITY] RESCHEDULE MODULE-------------------------------------------------------------*/
+                    if( isRejected == 1 && isRescheduleOn == 1){
+                        int (*availabilityMap)[TIMESLOTS_PER_DAY] = malloc(sizeof(int[days][TIMESLOTS_PER_DAY]));
+                        printf("--------->Rescheduling . . . \n");
+                        for(index=0; index < second->all_num; index++){//only read once in the child in the process
+                            int ID = getIDByName(second->all_name[index],name, childNumber);
+                            strcpy(p2cBuf, "reschedule");
+                            write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                            printf("Parent: %s sent to %s\n", p2cBuf, name[ID]);
+                            //x is for number of bytes sent
+                            int x = read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            c2pBuf[x] = 0;
+                            int slotsArr[MAX_TIME_SLOTS];
+                            int nbrOfSlots = getIntArrayFromString(c2pBuf, slotsArr);
+                            printf("Parent: %s slots: ", name[ID]);
+                            printIntArray(slotsArr, nbrOfSlots);
+                            // printTimeTable(availabilityMap, days);
+                            fillAvailability(availabilityMap, slotsArr, nbrOfSlots);
+                            // printTimeTable(availabilityMap, days);
+                        }
+                        int slotsNeeded = ceil(second->duration);
+                        int commonSlot = findRescheduleSlot(availabilityMap,days,second->all_num,slotsNeeded);
+                        if(commonSlot < 0){
+                            strcpy(p2cBuf, "NO_SLOTS");
+                            for(index=0; index < second->all_num; index++){//only read once in the child in the process
+                                int ID = getIDByName(second->all_name[index],name, childNumber);
+                                write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                                read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            }
+                            printf("Rescheduling slots not found\n");
+                        }
+                        else{
+                            int rescheduleCode = (second->id*10000) + (slotsNeeded*1000) + commonSlot;
+                            sprintf(p2cBuf, "%d %d", rescheduleCode, getPiority(second->type));
+                            printf("Parent: slot No: %d needed: %d\n", rescheduleCode, slotsNeeded);
+
+                            for(index=0; index < second->all_num; index++){//only read once in the child in the process
+                                int ID = getIDByName(second->all_name[index],name, childNumber);
+                                write(p2c[ID][1], p2cBuf, BUF_SIZE);
+                                read(c2p[ID][0], c2pBuf, BUF_SIZE);
+                            }
+                            //updating the structure
+                            second->isRescheduled = 1;
+                            second->able = false;
+                            second->newStartTime = ((commonSlot%10) * 100) + 1800;
+                            sprintf(second->newDate, "%d", atoi(startDate) + (commonSlot/10));
+                        }
+                        
                     }
-                    /*------------------------------------------------------------------------------*/
+                /*--------------------------------------------------------------------------------------------------------------------*/
+
                     second=second->next;
                 }
                 //------------------[PARENT] END-SCHEDULING MESSAGE TO CHILDREN-----------------------------
