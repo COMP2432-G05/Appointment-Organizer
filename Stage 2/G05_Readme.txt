@@ -73,13 +73,19 @@ Appointment Organizer (APO)
 	> printSchd ALL
 
 
-3. COMP2432 Group Members (G05)
+3. Reminder
 
-- DENG Chun Yung (21084115D)
-- JIANG Guanlin (21093962D)
-- LI Tong (21101988D)
-- LIU Yuzhou (21100602D)
-- NIYITEGEKA Berwa Aime Noel (21104645D)
+	- User can find all the output files in output folder !
+
+
+4. COMP2432 Group Members (G05)
+
+	- DENG Chun Yung (21084115D)
+	- JIANG Guanlin (21093962D)
+	- LI Tong (21101988D)
+	- LIU Yuzhou (21100602D)
+	- NIYITEGEKA Berwa Aime Noel (21104645D)
+
 
 
 The copyright is belong to COMP2432 Group 5 in 2023.

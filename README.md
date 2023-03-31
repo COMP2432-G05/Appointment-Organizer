@@ -77,7 +77,9 @@ gcc G05_APO.c -o G05_APO -lm
 
 ```
 
+## Reminder
 
+- User can find all the output files in output folder !
 
 ## COMP2432 Group Members (G05)
 
