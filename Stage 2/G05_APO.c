@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include<stdbool.h>
+#include <stdbool.h>
 
 #define NAME_SIZE 20
 #define COLS 5
@@ -13,9 +13,24 @@
 #define MAX_CHAR_SLOTNO 4
 #define MAX_MSG_SIZE 2000
 
+// The Structure of Appointment:
+//
+// sentence --> the user input
+// type --> privateTime, groupStudy, etc.
+// startTime --> the event start time (ex. 1400 -> 14:00)
+// duration --> the time range of that event (ex. 2.0 -> 2 hours)
+// date --> the date of the event (ex. 20230501)
+// host_name --> the people who host this event
+// all_name --> the people who attent this event
+// all_num --> number of people
+// able --> the status of the event is scheduled or not
+// id --> the event id
+// isRescheduled --> is the status of the event is rescheduled or not
+// newStartTime --> the rescheduled start time
+// newDate --> the rescheduled date
 struct Appointment {
     char sentence[80];
-    char type[20]; //type of the event
+    char type[20];
     int startTime;
     float duration;
     char date[9];
@@ -32,6 +47,8 @@ struct Appointment {
     struct Appointment* next;
 };
 
+
+// the linkedlist insert to the last
 void insertlast(struct Appointment *newnode,struct Appointment **head){
     struct Appointment *first=*head;
     struct Appointment *second=first->next;
@@ -43,6 +60,7 @@ void insertlast(struct Appointment *newnode,struct Appointment **head){
     newnode->next=NULL;
 }
 
+// create the linkedlist
 struct Appointment* creation(char sentence[]){
     char temp_sen[80];
     struct Appointment *temp=(struct Appointment*)malloc(sizeof(struct Appointment));
@@ -70,6 +88,8 @@ struct Appointment* creation(char sentence[]){
     temp->id=-1;
     return temp;
 }
+
+// give the Appoinment Priority for schedule the events
 void assingAppointmentPriority(int timeTable[][TIMESLOTS_PER_DAY], int priorityTable[][TIMESLOTS_PER_DAY], int taskID, int date, int startTime, float duration, int priority){
     int dayPos = dateToIndex(date);
     int startHours = startTime / 100;
@@ -90,6 +110,7 @@ void assingAppointmentPriority(int timeTable[][TIMESLOTS_PER_DAY], int priorityT
         priorityTable[dayPos][i] = priority;
     }
 }
+
 int durationIndex(int time, float duration){
     int startMin = time % 100;
     int hour = (int) duration;
@@ -288,6 +309,7 @@ void assignFCFS(int timeTable[][TIMESLOTS_PER_DAY], int taskID, int date, int st
 
 }
 
+// get the piority of events (for events piority scheduling)
 int getPiority(char *appointment){
     if(strcmp(appointment, "privateTime")==0){
         return 4;
@@ -388,7 +410,7 @@ int findRescheduleSlot(int map[][TIMESLOTS_PER_DAY], int days, int target, int n
         }
         count=0;
     }
-    return  slotNo;
+    return slotNo;
 }
 
 void fillTimeTable(int timeTable[][TIMESLOTS_PER_DAY], int days, int taskID, int slotNo, int n){
@@ -478,6 +500,7 @@ char* getMeeting(int cal[][COLS],int day_num){
     }
     return result;
 }
+
 struct Appointment* FAPO(struct Appointment **head,int m_id){
     struct Appointment *second=*head;
     while(second!=NULL){
@@ -489,6 +512,7 @@ struct Appointment* FAPO(struct Appointment **head,int m_id){
     return NULL;
 }
 
+// will be return the string of the appointment for log to file
 char* print_Appointment(struct Appointment *node){
     char *result=(char*)malloc(sizeof(char)*1000);
     strcpy(result, "");
@@ -546,10 +570,12 @@ char* print_Appointment(struct Appointment *node){
     return result;
 }
 
+
 int getPreID(char *date, int index, int timetable[][COLS]){
     int day=atoi(date)%100 -1;
     return timetable[day][index];
 }
+
 
 char* generateTBR(char *date, int time, float duration, int timetable[][COLS]){
     int i=0;
@@ -567,6 +593,8 @@ char* generateTBR(char *date, int time, float duration, int timetable[][COLS]){
     }
     return toBeRemove;
 }
+
+
 void clear_list(struct Appointment **head){
     struct Appointment *second=*head;
     while(second!=NULL){
@@ -574,6 +602,8 @@ void clear_list(struct Appointment **head){
         second=second->next;
     }
 }
+
+
 void resetTtb(int timetable[][COLS],int pTimetable[][COLS], int days){
     int counter, j;
     for (counter = 0; counter < days; counter++) {
@@ -583,6 +613,8 @@ void resetTtb(int timetable[][COLS],int pTimetable[][COLS], int days){
         }
     }
 }
+
+// for calculating the ultilization rate
 char* get_ultilization_rate(char name[],int timeTable[][COLS],int days){
     float size=COLS*days;
     int i,j;
@@ -598,6 +630,8 @@ char* get_ultilization_rate(char name[],int timeTable[][COLS],int days){
     sprintf(result,"%s      - %.1f%%\n",name,used_slot/size*100.000);
     return result;
 }
+
+// read the seq we store in the seq file (seq.txt)
 int readFileSeq(int algMode) {
     int i = 0;
 
@@ -639,6 +673,7 @@ int readFileSeq(int algMode) {
     return -1;
 }
 
+// update the seq we store in the seq file (seq.txt)
 void updateFileSeq(int algMode) {
     int i = 0;
 
@@ -1400,5 +1435,4 @@ int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNu
     }
     return -1;
 }
-
 
