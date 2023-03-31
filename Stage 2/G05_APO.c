@@ -732,8 +732,19 @@ void updateFileSeq(int algMode) {
     fclose(rd);
     fclose(wr);
 }
-//------------------------------------------------------------------------------------
 
+// get the userId by input name
+int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNumber) {
+    int i;
+    for (i = 0; i < childNumber; i++) {
+        if (strcmp(singleName, names[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+//------------------------------------------------------------------------------------
 
 int main(int argc, char *argv[]) {
     // start the program
@@ -1572,15 +1583,4 @@ int main(int argc, char *argv[]) {
     }
     //------------------------------------------------------------------------------
     exit(0);
-}
-
-// get the userId by input na
-int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNumber) {
-    int i;
-    for (i = 0; i < childNumber; i++) {
-        if (strcmp(singleName, names[i]) == 0) {
-            return i;
-        }
-    }
-    return -1;
 }
