@@ -321,10 +321,10 @@ int getPiority(char *appointment){
     else if(strcmp(appointment, "projectMeeting")==0){
         return 3;
     }
-    else if(strcmp(appointment, "projectMeeting")==0){
+    else if(strcmp(appointment, "groupStudy")==0){
         return 2;
     }
-    else if(strcmp(appointment, "projectMeeting")==0){
+    else if(strcmp(appointment, "gathering")==0){
         return 1;
     }
     else return -1;
@@ -733,7 +733,7 @@ void updateFileSeq(int algMode) {
     fclose(wr);
 }
 
-// get the userId by input name
+// get the userId by input na
 int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNumber) {
     int i;
     for (i = 0; i < childNumber; i++) {
@@ -745,6 +745,7 @@ int getIDByName(char singleName[NAME_SIZE], char names[][NAME_SIZE], int childNu
 }
 
 //------------------------------------------------------------------------------------
+
 
 int main(int argc, char *argv[]) {
     // start the program
@@ -1584,3 +1585,4 @@ int main(int argc, char *argv[]) {
     //------------------------------------------------------------------------------
     exit(0);
 }
+
