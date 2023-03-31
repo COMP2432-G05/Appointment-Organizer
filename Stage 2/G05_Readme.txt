@@ -42,6 +42,12 @@ Appointment Organizer (APO)
 	>  gathering lucy 20230404 1900 4.0 john paul mary
 
 
+- Use reschedule command to automatical reschedule the appoinment if rejected
+
+	## if user want to open the automatical reschedule the appoinment function, user need to input this command
+	> reschedule
+
+
 - Use printSchd to export report file (after inital the executable file)
 
 	## Example: use FCFS (print the schedules use the FCFS algorithms)

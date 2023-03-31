@@ -47,6 +47,13 @@ gcc G05_APO.c -o G05_APO -lm
 >  gathering lucy 20230404 1900 4.0 john paul mary
 ```
 
+- Use reschedule command to automatical reschedule the appoinment if rejected
+
+```bash
+## if user want to open the automatical reschedule the appoinment function, user need to input this command
+> reschedule
+```
+
 - Use printSchd to export report file (after inital the executable file)
 
 ```bash
