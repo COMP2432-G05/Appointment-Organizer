@@ -39,13 +39,13 @@ Appointment Organizer (APO)
 
 	## Example (gathering): 
 	## lucy -> host user, 20230404 1900 -> start time, 4.0 -> time usage, john paul mary -> other user who join this event
-	>  gathering lucy 20230404 1900 4.0 john paul mary
+	> gathering lucy 20230404 1900 4.0 john paul mary
 
 
 - Use reschedule command to automatical reschedule the appoinment if rejected
 
 	## if user want to open the automatical reschedule the appoinment function, user need to input this command
-	> reschedule
+	> rescheduling
 
 
 - Use printSchd to export report file (after inital the executable file)
