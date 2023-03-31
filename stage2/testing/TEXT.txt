@@ -1,0 +1,186 @@
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+2023-04-01   18:00   20:00   Private Time     
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+mary
+2023-04-01   20:00   23:00   Private Time     
+lucy
+paul
+2023-04-01   18:00   20:00   Private Time     
+john
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+mary
+2023-04-01   20:00   23:00   Private Time     
+lucy
+paul
+2023-04-01   18:00   20:00   Private Time     
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+paul
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   19:00   21:00   Project Meeting   => 20230401 2000 Paul Mary
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-01   18:00   20:00   Private Time     
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+john
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+mary
+2023-04-01   20:00   23:00   Private Time     
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+lucy
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
+paul
+2023-04-03   18:00   20:00   Group Study       John Lucy
+2023-04-04   19:00   23:00   Gathering         John Paul Mary
