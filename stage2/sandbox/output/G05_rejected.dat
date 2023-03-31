@@ -1,0 +1,42 @@
+
+*** Rejected List(FCFS)***
+Altogether there are 1 appointments rejected.
+1. projectMeeting john 20230401 1900 2.0 paul mary
+
+*** Performance ***
+Total Number of Requests Received: 5.0(100%)
+      Number of Requests Accepted: 4.0(80.0%)
+      Number of Requests Accepted: 1.0(20.0%)
+
+Number of Requests Accepted by Individual:
+john - 2
+mary - 2
+lucy - 2
+paul - 3
+
+Utilization of Time Slot:
+john      - 4.0%
+mary      - 4.7%
+lucy      - 4.0%
+paul      - 5.3%
+
+*** Rejected List(PRIORITY)***
+Altogether there are 1 appointments rejected.
+1. projectMeeting john 20230401 1900 2.0 paul mary
+
+*** Performance ***
+Total Number of Requests Received: 5.0(100%)
+      Number of Requests Accepted: 4.0(80.0%)
+      Number of Requests Accepted: 1.0(20.0%)
+
+Number of Requests Accepted by Individual:
+john - 2
+mary - 2
+lucy - 2
+paul - 3
+
+Utilization of Time Slot:
+john      - 0.0%
+mary      - 2.0%
+lucy      - 0.0%
+paul      - 1.3%
