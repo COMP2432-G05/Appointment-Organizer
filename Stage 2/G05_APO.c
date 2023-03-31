@@ -728,9 +728,6 @@ int main(int argc, char *argv[]) {
     sprintf(pPretext, "Parent message: ");
     FILE *create;
     create = fopen("./seq.txt", "a+");
-    updateFileSeq(0);
-    updateFileSeq(1);
-    updateFileSeq(2);
     close(create);
     // names list
     char(*name)[NAME_SIZE] = (char(*)[NAME_SIZE])malloc(sizeof(char) * (argc - 3) * NAME_SIZE);
@@ -1006,19 +1003,19 @@ int main(int argc, char *argv[]) {
             char alg[BUF_SIZE];
             FILE *fp,*rj_file;
             if(strcmp(token,"FCFS")==0){
-                seq=readFileSeq(0);
+                seq=readFileSeq(0) + 1;
                 sprintf(logFile,"./output/G05_%02d_FCFS.txt",seq);
                 updateFileSeq(0);
                 algNum=1;
             }
             else if(strcmp(token,"ALL")==0){
-                seq=readFileSeq(2);
+                seq=readFileSeq(2) + 1;
                 sprintf(logFile, "./output/G05_%02d_ALL.txt", seq);
                 updateFileSeq(2);
                 algNum=2;
             }
             else if(strcmp(token,"PRIORITY")==0){
-                seq=readFileSeq(1);
+                seq=readFileSeq(1) + 1;
                 sprintf(logFile, "./output/G05_%02d_PRIORITY.txt", seq);
                 updateFileSeq(1);
                 algNum=1;
@@ -1217,7 +1214,6 @@ int main(int argc, char *argv[]) {
             if(strcmp(token, "PRIORITY") == 0 || strcmp(token,"ALL")==0){
                 fputs("Period: ", fp);
                 printf("I am here\n");
-                // fprintf(fp, "%s", "Period: ");
                 for (i = 0; i < 8; i++) {
                     if (i == 4 || i == 6) {
                         fputs("-", fp);
