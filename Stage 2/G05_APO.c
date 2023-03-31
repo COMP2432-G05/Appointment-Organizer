@@ -879,7 +879,13 @@ int main(int argc, char *argv[]) {
                 }
             /*---------------------------------------------------------------------------------------------------------------------------------*/
 
-                else if(strcmp(p2cBuf,"endProgram") == 0) exit(0);
+                else if(strcmp(p2cBuf,"endProgram") == 0){
+                    /*------------------[CHILD] CLOSE USED PIPES------------------------------------*/
+                    close(c2p[i][1]);
+                    close(p2c[i][0]);
+                    /*------------------------------------------------------------------------------*/
+                    exit(0);
+                }
 
                 else{//when the incoming command is an appointment
                     char temp[80];
@@ -1025,6 +1031,12 @@ int main(int argc, char *argv[]) {
     struct Appointment *head=(struct Appointment*)malloc(sizeof(struct Appointment));
     head->id=-1;
     int alive = 1;
+    /*---------------[PARENT] PARENT CLOSING UNUSED PIPES--------------------------*/
+    for(i=0;i<childNumber;i++){
+        close(p2c[i][0]);
+        close(c2p[i][1]);
+    }
+    /*-----------------------------------------------------------------------------*/
     while(alive == 1){
         printf("Please enter appointment:\n");
 
@@ -1555,6 +1567,12 @@ int main(int argc, char *argv[]) {
             continue;
         }
     }
+    /*------------------------[PARENT] CLOSING USED ENDS OF PIPE-----------------*/
+    for( i=0; i< childNumber; i++){
+        close(p2c[i][1]);
+        close(c2p[i][0]);
+    }
+    /*----------------------------------------------------------------------------*/
     //----------------[PARENT] CHILDREN COLLECTION ---------------------------------
     for (i = 0; i < childNumber; i++) { 
         wait(NULL);

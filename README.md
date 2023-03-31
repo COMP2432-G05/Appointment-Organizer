@@ -47,10 +47,10 @@ gcc G05_APO.c -o G05_APO -lm
 > gathering lucy 20230404 1900 4.0 john paul mary
 ```
 
-- Use reschedule command to automatical reschedule the appoinment if rejected
+- Use reschedule command to automatical reschedule the appointment if rejected
 
 ```bash
-## if user want to open the automatical reschedule the appoinment function, user need to input this command
+## if user want to open the automatical reschedule the appointment function, user need to input this command
 > rescheduling
 ```
 
@@ -76,8 +76,8 @@ gcc G05_APO.c -o G05_APO -lm
     ========================================================
 """
 
-## Example: use PIORITY (print the schedules use the PIORITY algorithms)
-> printSchd PIORITY
+## Example: use PRIORITY (print the schedules using the PRIORITY algorithms)
+> printSchd PRIORITY
 
 ## Example: use ALL (print the schedules use all the algorithms)
 > printSchd ALL
