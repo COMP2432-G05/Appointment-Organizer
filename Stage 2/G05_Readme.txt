@@ -18,9 +18,8 @@ Appointment Organizer (APO)
 
 - For batch file input
 
-	gcc G05_APO.c -o G05_APO -lm
-	## 20230401 -> Start Date, 20230430 -> End Date, john mary lucy paul -> Users, G05_tests.dat -> the batch file which include the all the test inputs (!user can replace it)
-	./G05_APO 20230401 20230430 john mary lucy paul < G05_tests.dat 
+	## G05_tests.dat -> the file user want to input
+	> import G05_tests.dat
 
 
 - Use 4 types of commands to schedule meeting
